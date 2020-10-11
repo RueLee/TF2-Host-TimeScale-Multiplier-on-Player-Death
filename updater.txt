@@ -1,0 +1,15 @@
+"Updater" {
+	"Information" {
+		"Version" {
+			"Latest"	"0.1.1"
+		}
+		
+	}
+	
+	"Notes"	"-Initial release"
+
+	"Files" {
+		"Plugin"	"Path_SM/addons/sourcemod/plugins/host_timescale_multiplier.smx"
+		"Source"	"Path_SM/addons/sourcemod/scripting/host_timescale_multiplier.sp"
+	}
+}
