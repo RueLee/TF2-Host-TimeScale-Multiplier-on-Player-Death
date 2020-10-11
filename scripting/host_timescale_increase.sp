@@ -5,7 +5,7 @@
 #include <multicolors>
 #include <updater>
 
-#define PLUGIN_VERSION	"0.2.3"
+#define PLUGIN_VERSION	"0.2.4"
 #define UPDATE_URL		"https://github.com/RueLee/TF2-Increase-Host-TimeScale-on-Player-Death/blob/main/updater.txt"
 
 ConVar g_hTimeScale;
@@ -56,11 +56,11 @@ public void OnLibraryAdded(const char[] sName) {
 
 public OnMapEnd() {
 	g_hTimeScale.FloatValue = 1.0;
-	UnhookEvent("player_death", Event_PlayerDeath);
 }
 
 public void TF2_OnWaitingForPlayersStart() {
 	g_bWaitingForPlayers = true;
+	UnhookEvent("player_death", Event_PlayerDeath);
 }
 
 public void TF2_OnWaitingForPlayersEnd() {

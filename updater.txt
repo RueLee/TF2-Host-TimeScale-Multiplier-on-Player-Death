@@ -1,12 +1,12 @@
 "Updater" {
 	"Information" {
 		"Version" {
-			"Latest"	"0.2.3"
+			"Latest"	"0.2.4"
 		}
 		
 	}
 	
-	"Notes"	"-Fixed timescale printing at least one after mapchange."
+	"Notes"	"-Fixed hookevent."
 
 	"Files" {
 		"Plugin"	"Path_SM/addons/sourcemod/plugins/host_timescale_increase.smx"
