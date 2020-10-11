@@ -1,15 +1,12 @@
 "Updater" {
 	"Information" {
 		"Version" {
-			"Latest"	"0.2.1"
+			"Latest"	"0.2.3"
 		}
 		
 	}
 	
-	"Notes"	"-The host_timescale is now at a constant rate instead of exponential growth which may cause problems later."
-	"Notes"	"-Renamed file from "host_timescale_multiplier" to "host_timescale_increase" for an accureate filename after change."
-	"Notes"	"-Renamed ConVar from "sm_timescale_multiplier" to "sm_timescale_addition"."
-	"Notes"	"-Changed sm_timescale_addition default value from 1.02 to 0.04."
+	"Notes"	"-Fixed timescale printing at least one after mapchange."
 
 	"Files" {
 		"Plugin"	"Path_SM/addons/sourcemod/plugins/host_timescale_increase.smx"
