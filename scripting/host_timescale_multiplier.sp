@@ -6,7 +6,7 @@
 #include <updater>
 
 #define PLUGIN_VERSION	"0.1.1"
-#define UPDATE_URL		"Link goes here..."
+#define UPDATE_URL		"https://github.com/RueLee/TF2-Host-TimeScale-Multiplier-on-Player-Death/blob/main/updater.txt"
 
 ConVar g_hTimeScale;
 ConVar g_hSVCheats;
@@ -29,7 +29,7 @@ public Plugin:myinfo = {
 	author = "RueLee",
 	description = "It's TF2 but the game gets 1.02x faster everytime when a player dies.",
 	version = PLUGIN_VERSION,
-	url = ""
+	url = "https://github.com/RueLee/TF2-Host-TimeScale-Multiplier-on-Player-Death"
 }
 
 public OnPluginStart() {
