@@ -5,12 +5,12 @@
 #include <multicolors>
 #include <updater>
 
-#define PLUGIN_VERSION	"0.1.1"
+#define PLUGIN_VERSION	"0.2.1"
 #define UPDATE_URL		"https://github.com/RueLee/TF2-Host-TimeScale-Multiplier-on-Player-Death/blob/main/updater.txt"
 
 ConVar g_hTimeScale;
 ConVar g_hSVCheats;
-ConVar g_hPercentage;
+ConVar g_hAddition;
 
 bool g_bWaitingForPlayers;
 
@@ -25,9 +25,9 @@ public APLRes:AskPluginLoad2(Handle:myself, bool:late, String:error[], err_max) 
 }
 
 public Plugin:myinfo = {
-	name = "[TF2] Host TimeScale Multiplier on Player Death",
+	name = "[TF2] Increase Host TimeScale on Player Death",
 	author = "RueLee",
-	description = "It's TF2 but the game gets 1.02x faster everytime when a player dies.",
+	description = "It's TF2 but the game gets 0.04+ faster everytime when a player dies.",
 	version = PLUGIN_VERSION,
 	url = "https://github.com/RueLee/TF2-Host-TimeScale-Multiplier-on-Player-Death"
 }
@@ -36,7 +36,7 @@ public OnPluginStart() {
 	CreateConVar("sm_timescale_version", PLUGIN_VERSION, "Plugin Version -- DO NOT MODIFY!", FCVAR_NOTIFY | FCVAR_DONTRECORD);
 	g_hTimeScale = FindConVar("host_timescale");
 	g_hSVCheats = FindConVar("sv_cheats");
-	g_hPercentage = CreateConVar("sm_timescale_multiplier", "1.02", "Change timescale by multiplying. | Default: 1.02x");
+	g_hAddition = CreateConVar("sm_timescale_addition", "0.04", "Change timescale by adding. | Default: 0.04");
 	
 	RegAdminCmd("sm_resettimescale", CmdResetTimeScale, ADMFLAG_GENERIC, "Resets host_timescale to the default value.");
 	
@@ -75,8 +75,8 @@ public Action Event_RoundStart(Event hEvent, const char[] sName, bool bDontBroad
 }
 
 public Action Event_PlayerDeath(Event hEvent, const char[] sName, bool bDontBroadcast) {
-	g_hTimeScale.FloatValue *= g_hPercentage.FloatValue;
-	CPrintToChatAll("{green}[SM] {default}TimeScale is now %.3f", g_hTimeScale.FloatValue);
+	g_hTimeScale.FloatValue += g_hAddition.FloatValue;
+	CPrintToChatAll("{green}[SM] {default}TimeScale is now %.2f", g_hTimeScale.FloatValue);
 }
 
 public Action Event_RoundWin(Event hEvent, const char[] sName, bool bDontBroadcast) {
