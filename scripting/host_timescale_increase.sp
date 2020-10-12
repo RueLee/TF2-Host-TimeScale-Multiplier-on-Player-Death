@@ -1,16 +1,18 @@
 #pragma semicolon 1
-#undef REQUIRE_PLUGIN
 
 #include <sourcemod>
 #include <multicolors>
+
+#undef REQUIRE_PLUGIN
 #include <updater>
 
-#define PLUGIN_VERSION	"0.2.4"
+#define PLUGIN_VERSION	"0.2.5"
 #define UPDATE_URL		"https://github.com/RueLee/TF2-Increase-Host-TimeScale-on-Player-Death/blob/main/updater.txt"
 
 ConVar g_hTimeScale;
 ConVar g_hSVCheats;
 ConVar g_hAddition;
+ConVar g_hTeamCapturedValue;
 
 bool g_bWaitingForPlayers;
 
@@ -37,11 +39,14 @@ public OnPluginStart() {
 	g_hTimeScale = FindConVar("host_timescale");
 	g_hSVCheats = FindConVar("sv_cheats");
 	g_hAddition = CreateConVar("sm_timescale_addition", "0.04", "Change timescale by adding. | Default: 0.04");
+	g_hTeamCapturedValue = CreateConVar("sm_timescale_captured_value", "0.5", "Decreases timescale when a team has captured the point. | Default: 0.5");
 	
 	RegAdminCmd("sm_resettimescale", CmdResetTimeScale, ADMFLAG_GENERIC, "Resets host_timescale to the default value.");
 	
 	HookEvent("teamplay_round_start", Event_RoundStart);
 	HookEvent("teamplay_round_win", Event_RoundWin);
+	HookEvent("teamplay_point_captured", Event_TeamCaptured);
+	HookEvent("ctf_flag_captured", Event_TeamCaptured);
 	
 	if (LibraryExists("updater")) {
 		Updater_AddPlugin(UPDATE_URL);
@@ -84,6 +89,11 @@ public Action Event_RoundWin(Event hEvent, const char[] sName, bool bDontBroadca
 	g_hTimeScale.FloatValue = 1.0;
 	CPrintToChatAll("{green}[SM] {default}TimeScale resetted.");
 	UnhookEvent("player_death", Event_PlayerDeath);
+}
+
+public Action Event_TeamCaptured(Event hEvent, const char[] sName, bool bDontBroadcast) {
+	g_hTimeScale.FloatValue -= g_hTeamCapturedValue.FloatValue;
+	CPrintToChatAll("{green}[SM] {default}TimeScale decreased to %.2f", g_hTimeScale.FloatValue);
 }
 
 public Action CmdResetTimeScale(int client, int args) {

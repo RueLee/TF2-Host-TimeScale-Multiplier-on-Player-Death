@@ -1,12 +1,12 @@
 "Updater" {
 	"Information" {
 		"Version" {
-			"Latest"	"0.2.4"
+			"Latest"	"0.2.5"
 		}
 		
 	}
 	
-	"Notes"	"-Fixed hookevent."
+	"Notes"	"-Added ConVar: sm_timescale_captured_value"
 
 	"Files" {
 		"Plugin"	"Path_SM/addons/sourcemod/plugins/host_timescale_increase.smx"
