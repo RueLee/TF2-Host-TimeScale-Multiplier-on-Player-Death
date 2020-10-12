@@ -39,7 +39,7 @@ public OnPluginStart() {
 	g_hTimeScale = FindConVar("host_timescale");
 	g_hSVCheats = FindConVar("sv_cheats");
 	g_hAddition = CreateConVar("sm_timescale_addition", "0.04", "Change timescale by adding. | Default: 0.04");
-	g_hTeamCapturedValue = CreateConVar("sm_timescale_captured_value", "0.5", "Decreases timescale when a team has captured the point. | Default: 0.5");
+	g_hTeamCapturedValue = CreateConVar("sm_timescale_captured_value", "0.1", "Decreases timescale when a team has captured the point. | Default: 0.1");
 	
 	RegAdminCmd("sm_resettimescale", CmdResetTimeScale, ADMFLAG_GENERIC, "Resets host_timescale to the default value.");
 	
