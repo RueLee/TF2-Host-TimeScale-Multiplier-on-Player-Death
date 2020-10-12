@@ -7,7 +7,7 @@
 	}
 	
 	"Notes"	"-Added ConVar: sm_timescale_captured_value"
-	"Notes"	"-Captured point or flag will decrease the timescale."
+	"Notes"	"-Captured point or flag will decrease the timescale to a certain value."
 
 	"Files" {
 		"Plugin"	"Path_SM/addons/sourcemod/plugins/host_timescale_increase.smx"
