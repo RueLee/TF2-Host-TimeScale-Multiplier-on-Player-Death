@@ -6,8 +6,8 @@
 		
 	}
 	
-	"Notes"	"-Added ConVar: sm_timescale_captured_value"
-	"Notes"	"-Captured point or flag will decrease the timescale to a certain value."
+	"Notes"	"- Removed g_hSVCheats ConVar in this plugin as players can use cheat commands in the console."
+	"Notes"	"- Added Command: sm_settimescale | Sets host_timescale to a desired value."
 
 	"Files" {
 		"Plugin"	"Path_SM/addons/sourcemod/plugins/host_timescale_increase.smx"
