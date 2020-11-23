@@ -6,11 +6,10 @@
 #undef REQUIRE_PLUGIN
 #include <updater>
 
-#define PLUGIN_VERSION	"0.2.5"
+#define PLUGIN_VERSION	"0.2.6"
 #define UPDATE_URL		"https://github.com/RueLee/TF2-Increase-Host-TimeScale-on-Player-Death/blob/main/updater.txt"
 
 ConVar g_hTimeScale;
-ConVar g_hSVCheats;
 ConVar g_hAddition;
 ConVar g_hTeamCapturedValue;
 
@@ -37,11 +36,11 @@ public Plugin:myinfo = {
 public OnPluginStart() {
 	CreateConVar("sm_timescale_version", PLUGIN_VERSION, "Plugin Version -- DO NOT MODIFY!", FCVAR_NOTIFY | FCVAR_DONTRECORD);
 	g_hTimeScale = FindConVar("host_timescale");
-	g_hSVCheats = FindConVar("sv_cheats");
 	g_hAddition = CreateConVar("sm_timescale_addition", "0.04", "Change timescale by adding. | Default: 0.04");
 	g_hTeamCapturedValue = CreateConVar("sm_timescale_captured_value", "0.1", "Decreases timescale when a team has captured the point. | Default: 0.1");
 	
 	RegAdminCmd("sm_resettimescale", CmdResetTimeScale, ADMFLAG_GENERIC, "Resets host_timescale to the default value.");
+	RegAdminCmd("sm_settimescale", CmdSetScale, ADMFLAG_GENERIC, "Sets host_timescale to a desired value.");
 	
 	HookEvent("teamplay_round_start", Event_RoundStart);
 	HookEvent("teamplay_round_win", Event_RoundWin);
@@ -74,7 +73,6 @@ public void TF2_OnWaitingForPlayersEnd() {
 
 public Action Event_RoundStart(Event hEvent, const char[] sName, bool bDontBroadcast) {
 	if (!g_bWaitingForPlayers) {
-		g_hSVCheats.IntValue = 1;
 		g_hTimeScale.FloatValue = 1.0;
 		HookEvent("player_death", Event_PlayerDeath);
 	}
@@ -99,5 +97,21 @@ public Action Event_TeamCaptured(Event hEvent, const char[] sName, bool bDontBro
 public Action CmdResetTimeScale(int client, int args) {
 	g_hTimeScale.FloatValue = 1.0;
 	CPrintToChatAll("{green}[SM] {mediumvioletred}%N {default}has reset the timescale to the default value!", client);
+	return Plugin_Handled;
+}
+
+public Action CmdSetScale(int client, int args) {
+	if (args != 1) {
+		ReplyToCommand(client, "[SM] Usage: sm_settimescale <float>");
+		return Plugin_Handled;
+	}
+	
+	char arg1[32];
+	GetCmdArg(1, arg1, sizeof(arg1));
+	
+	float scaleValue = StringToFloat(arg1);
+	
+	g_hTimeScale.FloatValue = scaleValue;
+	CPrintToChatAll("{green}[SM] {mediumvioletred}%N {default}has set the timescale value to %.2f", client, scaleValue);
 	return Plugin_Handled;
 }
