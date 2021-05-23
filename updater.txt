@@ -1,13 +1,14 @@
 "Updater" {
 	"Information" {
 		"Version" {
-			"Latest"	"0.2.5"
+			"Latest"	"0.3.1"
 		}
 		
 	}
 	
-	"Notes"	"- Removed g_hSVCheats ConVar in this plugin as players can use cheat commands in the console."
-	"Notes"	"- Added Command: sm_settimescale | Sets host_timescale to a desired value."
+	"Notes"	"- Added an option to use sinusoidal rate. Linear rate option is set by default, sinusoidal rate is PI/16, and sinusoidal amplitude is 1."
+	"Notes"	"- Added 3 ConVars: sm_timescale_sine_addition, sm_timescale_sinusodial_sine_enabled, sm_timescale_linear_enabled"
+	"Notes" "- Added 4 Commands: sm_enable_sine_timescale, sm_sineamplitude, sm_setsineaddition, sm_enable_linear_timescale"
 
 	"Files" {
 		"Plugin"	"Path_SM/addons/sourcemod/plugins/host_timescale_increase.smx"
