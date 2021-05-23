@@ -1,7 +1,7 @@
 "Updater" {
 	"Information" {
 		"Version" {
-			"Latest"	"0.3.1"
+			"Latest"	"0.3.2"
 		}
 		
 	}
@@ -10,7 +10,7 @@
 	"Notes"	"- Added 3 ConVars: sm_timescale_sine_addition, sm_timescale_sinusodial_sine_enabled, sm_timescale_linear_enabled"
 	"Notes" "- Added 4 Commands: sm_enable_sine_timescale, sm_sineamplitude, sm_setsineaddition, sm_enable_linear_timescale"
 	"Notes" "- Renamed cmd from sm_resettimescale to sm_timescalereset."
-
+	"Notes" "- Fixed missing handle for sm_enable_linear_timescale."
 	"Files" {
 		"Plugin"	"Path_SM/addons/sourcemod/plugins/host_timescale_increase.smx"
 		"Source"	"Path_SM/addons/sourcemod/scripting/host_timescale_increase.sp"

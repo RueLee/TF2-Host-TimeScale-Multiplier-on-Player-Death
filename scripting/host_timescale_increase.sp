@@ -6,7 +6,7 @@
 #undef REQUIRE_PLUGIN
 #include <updater>
 
-#define PLUGIN_VERSION	"0.3.1"
+#define PLUGIN_VERSION	"0.3.2"
 #define UPDATE_URL		"https://github.com/RueLee/TF2-Increase-Host-TimeScale-on-Player-Death/blob/main/updater.txt"
 
 ConVar g_hTimeScale;
@@ -210,4 +210,5 @@ public Action CmdLinearTimeScale(int client, int args) {
 	else {
 		CPrintToChat(client, "{green}[SM] {default}Cannot call this command while this is active!");
 	}
+	return Plugin_Handled;
 }
