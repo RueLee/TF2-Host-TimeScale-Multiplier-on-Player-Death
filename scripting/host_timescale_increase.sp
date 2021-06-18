@@ -9,6 +9,7 @@
 #define PLUGIN_VERSION	"0.3.2"
 #define UPDATE_URL		"https://github.com/RueLee/TF2-Increase-Host-TimeScale-on-Player-Death/blob/main/updater.txt"
 
+// ConVar
 ConVar g_hTimeScale;
 ConVar g_hAddition;
 ConVar g_hSineAddition;
@@ -16,8 +17,10 @@ ConVar g_hTeamCapturedValue;
 ConVar g_hLinearTimescale;
 ConVar g_hSinusodialSineTimescale;
 
+// Boolean
 bool g_bWaitingForPlayers;
 
+// Float
 float g_fSineAmplitude;
 float g_fSineNumPIAddition;
 float g_fSineNumDenom;
@@ -50,6 +53,7 @@ public OnPluginStart() {
 	g_hSinusodialSineTimescale = CreateConVar("sm_timescale_sinusodial_sine_enabled", "0", "");
 	g_hLinearTimescale = CreateConVar("sm_timescale_linear_enabled", "1", "");
 	
+	// Declaring default variables inside OnPluginStart.
 	g_fSineAmplitude = 1.0;
 	g_fSineNumPIAddition = PI / 16;
 	g_fSineNumDenom = 16.0;
@@ -79,12 +83,15 @@ public void OnLibraryAdded(const char[] sName) {
 }
 
 public OnMapEnd() {
+	// Sets the default value when map rotation ends.
 	g_hTimeScale.FloatValue = 1.0;
 	//g_fSineAmplitude = 2;
 }
 
 public void TF2_OnWaitingForPlayersStart() {
 	g_bWaitingForPlayers = true;
+	
+	// This does cause exceptions when it doesn't exist, but this is the only method I found for now.
 	UnhookEvent("player_death", Event_PlayerDeath);
 }
 
@@ -94,30 +101,57 @@ public void TF2_OnWaitingForPlayersEnd() {
 
 public Action Event_RoundStart(Event hEvent, const char[] sName, bool bDontBroadcast) {
 	if (!g_bWaitingForPlayers) {
-		g_hTimeScale.FloatValue = 1.0;
+		g_hTimeScale.FloatValue = 1.0;	// In case something goes wrong with host_timescale.
 		HookEvent("player_death", Event_PlayerDeath);
 	}
 }
 
 public Action Event_PlayerDeath(Event hEvent, const char[] sName, bool bDontBroadcast) {
 	if (g_hSinusodialSineTimescale.IntValue >= 1) {
-		//y = Asin(B) + D | Formula for sinusodial included in this code.
+		/*
+				   _
+			 \/ _ |_  // |-.   \/
+			 /  -  _| \  | |   /\
+
+		 1 -|         ,-'''-.
+			|      ,-'       `-.           *Not so accurate scale*
+			|    ,'             `.
+			|  ,'                 `.
+			| /                     \
+			|/                       \
+		----+-------------------------\--------------------------
+			|          __           __ \          __           /  __
+			|          ||/2         ||  \        3||/2        /  2||
+			|                            `.                 ,'
+			|                              `.             ,'
+			|                                `-.       ,-'
+		-1 -|                                   `-,,,-'
+		*/
+		// This graph was used from https://ascii.co.uk/art/sine
+		// Graph is shown in case if you are unaware.
+		
+		// y = Asin(B) + D | Formula for sinusodial included in this code.
 		g_hTimeScale.FloatValue = ((g_fSineAmplitude * Sine(g_hSineAddition.FloatValue)) + (g_fSineAmplitude + 0.5));
+		
+		// Add value
 		g_hSineAddition.FloatValue += g_fSineNumPIAddition;
 	}
 	if (g_hLinearTimescale.IntValue >= 1) {
+		// Constant rate
 		g_hTimeScale.FloatValue += g_hAddition.FloatValue;
 	}
 	CPrintToChatAll("{green}[SM] {default}TimeScale is now %.5f", g_hTimeScale.FloatValue);
 }
 
 public Action Event_RoundWin(Event hEvent, const char[] sName, bool bDontBroadcast) {
+	// Resets all values to default when round win is called.
 	g_hTimeScale.FloatValue = 1.0;
 	g_hSineAddition.FloatValue = 0.0;
 	CPrintToChatAll("{green}[SM] {default}TimeScale resetted.");
 	UnhookEvent("player_death", Event_PlayerDeath);
 }
 
+// This only has a constant rate. Other implementations may be out soon.
 public Action Event_TeamCaptured(Event hEvent, const char[] sName, bool bDontBroadcast) {
 	if (g_hLinearTimescale.IntValue >= 1) {
 		g_hTimeScale.FloatValue -= g_hTeamCapturedValue.FloatValue;
@@ -131,6 +165,7 @@ public Action CmdResetTimeScale(int client, int args) {
 	return Plugin_Handled;
 }
 
+// Will not work properly if sinusodial is active. More updates soon...
 public Action CmdSetScale(int client, int args) {
 	if (args != 1) {
 		ReplyToCommand(client, "[SM] Usage: sm_settimescale <float>");
@@ -147,6 +182,7 @@ public Action CmdSetScale(int client, int args) {
 	return Plugin_Handled;
 }
 
+// Sine Cmds
 public Action CmdSinTimeScale(int client, int args) {
 	if (g_hSinusodialSineTimescale.IntValue == 0) {
 		g_hLinearTimescale.IntValue = 0;
@@ -185,6 +221,7 @@ public Action CmdSinAmplitude(int client, int args) {
 }
 
 public Action CmdSetSinAddition(int client, int args) {
+	// Prompt command usage and return handle if args is not equal to 1.
 	if (args != 1) {
 		ReplyToCommand(client, "[SM] Usage: sm_setsineaddition <float> | Current Value: PI/%.5f", g_fSineNumDenom);
 		return Plugin_Handled;
@@ -201,6 +238,7 @@ public Action CmdSetSinAddition(int client, int args) {
 	return Plugin_Handled;
 }
 
+//Linear Cmds
 public Action CmdLinearTimeScale(int client, int args) {
 	if (g_hLinearTimescale.IntValue == 0) {
 		g_hLinearTimescale.IntValue = 1;
